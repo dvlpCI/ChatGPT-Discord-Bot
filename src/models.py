@@ -16,12 +16,25 @@ class OpenAIModel(ModelInterface):
         self.model_engine = model_engine
         self.image_size = image_size
 
+    # def chat_completion(self, messages) -> str:
+    #     response = openai.ChatCompletion.create(
+    #         model=self.model_engine,
+    #         messages=messages
+    #     )
+    #     return response
     def chat_completion(self, messages) -> str:
-        response = openai.ChatCompletion.create(
-            model=self.model_engine,
-            messages=messages
-        )
-        return response
+        try:
+            response = openai.Completion.create(
+                engine=self.model_engine,
+                messages=messages,
+            )
+            return response
+        except openai.error.OpenAIError as e:
+            print(f"Error in chat_completion: {e}")
+            return "错误了1"
+        except Exception as e:
+            print(f"Error in chat_completion: {e}")
+            return "错误了2"
 
     def image_generation(self, prompt: str) -> str:
         response = openai.Image.create(

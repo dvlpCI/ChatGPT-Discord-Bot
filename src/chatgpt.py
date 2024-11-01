@@ -10,8 +10,11 @@ class ChatGPT:
     def get_response(self, user_id: str, text: str) -> str:
         self.memory.append(user_id, {'role': 'user', 'content': text})
         response = self.model.chat_completion(self.memory.get(user_id))
+        # print(f"result in get_response: {response}")
         role = response['choices'][0]['message']['role']
         content = response['choices'][0]['message']['content']
+        # role = "qian: role"
+        # content = "qian: say hello world"
         self.memory.append(user_id, {'role': role, 'content': content})
         return content
 
