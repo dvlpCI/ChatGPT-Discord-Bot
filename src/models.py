@@ -28,13 +28,18 @@ class OpenAIModel(ModelInterface):
                 engine=self.model_engine,
                 messages=messages,
             )
-            return response
         except openai.error.OpenAIError as e:
-            print(f"Error in chat_completion: {e}")
-            return "错误了1"
+            response = {
+                "statusCode": -1,
+                "message": f"Error in chat_completion: {str(e)}"
+            }
         except Exception as e:
-            print(f"Error in chat_completion: {e}")
-            return "错误了2"
+            response = {
+                "statusCode": -1,
+                "message": f"Error in chat_completion: {str(e)}"
+            }
+            
+        return response
 
     def image_generation(self, prompt: str) -> str:
         response = openai.Image.create(
